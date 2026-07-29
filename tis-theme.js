@@ -591,7 +591,179 @@ light: "https://static.tildacdn.com/tild6661-6261-4138-b837-646464326634/Vietnam
 dark: "https://static.tildacdn.com/tild3637-6361-4063-b934-383361323137/Vietnam-dark.jpg",
 },
 ];
-var FRAME_ORIG = [
+var EN_PAIRS = [
+{
+light: "https://static.tildacdn.com/tild3065-3934-4637-b433-623431616431/Africa.jpg",
+dark: "https://static.tildacdn.com/tild3965-3939-4535-b062-316234386265/Africa-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3932-6564-4837-a434-616465663364/Brazil.jpg",
+dark: "https://static.tildacdn.com/tild6336-3866-4535-b831-346435313930/Brazil-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6435-3931-4465-b233-366337303532/Cambodia.jpg",
+dark: "https://static.tildacdn.com/tild6565-3833-4633-a539-653563313430/Cambodia-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6137-3134-4036-b932-633731333465/Canada.jpg",
+dark: "https://static.tildacdn.com/tild3765-3062-4662-a338-316264643835/Canada-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3935-3131-4363-b235-653636356664/Chile.jpg",
+dark: "https://static.tildacdn.com/tild3237-3961-4061-a535-616237666662/Chile-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6664-3865-4535-b133-353861356166/China.jpg",
+dark: "https://static.tildacdn.com/tild3463-3665-4532-b561-343835313635/China-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3065-3832-4664-b134-626464653633/Europe.jpg",
+dark: "https://static.tildacdn.com/tild3436-3639-4237-b931-323838306231/Europe-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3730-3066-4833-b436-646135626632/India.jpg",
+dark: "https://static.tildacdn.com/tild3531-6366-4164-a130-613565326662/India-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3533-3530-4066-b666-653464663731/Indonesia.jpg",
+dark: "https://static.tildacdn.com/tild6434-3261-4863-a131-326531343432/Indonesia-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3765-6531-4137-b164-306335393535/Japan-light.jpg",
+dark: "https://static.tildacdn.com/tild6532-3164-4730-b961-393831333430/Japan-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3637-6662-4133-b239-396466316462/Korea.jpg",
+dark: "https://static.tildacdn.com/tild3363-6433-4636-a665-623035306434/Korea-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6465-3631-4162-b763-646662356666/Malaysia-light.jpg",
+dark: "https://static.tildacdn.com/tild3936-6566-4265-b763-356462653130/Malaysia-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3032-6363-4165-a465-613633393563/Taiwan.jpg",
+dark: "https://static.tildacdn.com/tild6332-6638-4161-a339-343230336162/Taiwan-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3935-6361-4239-b836-663530636239/Tyrkey.jpg",
+dark: "https://static.tildacdn.com/tild3162-3536-4334-b361-366661333938/Tyrkey-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3634-6464-4130-b634-353565353139/USA.jpg",
+dark: "https://static.tildacdn.com/tild3566-3434-4864-b031-653162393565/USA-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6364-6562-4137-b436-343330663666/UAE.jpg",
+dark: "https://static.tildacdn.com/tild6161-3130-4937-b832-616530386436/UAE-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6464-3833-4536-a433-653232653133/Vietnam-light.jpg",
+dark: "https://static.tildacdn.com/tild6538-6666-4366-b961-656161363466/Vietnam-dark.jpg",
+},
+];
+var SEA_PAIRS = [
+{
+light: "https://static.tildacdn.com/tild3139-6161-4734-a137-323764356665/Dong-light.png",
+dark: "https://static.tildacdn.com/tild3032-3164-4338-a538-343430356130/Dong-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6266-3939-4335-b866-633663663565/East-light.png",
+dark: "https://static.tildacdn.com/tild6266-3630-4030-b464-336333656163/East-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3037-3538-4264-b939-316436636632/FESCO-light.png",
+dark: "https://static.tildacdn.com/tild3133-6637-4762-b362-343634623066/FESCO-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3639-6634-4539-b665-376265393832/GANG-light.png",
+dark: "https://static.tildacdn.com/tild3438-3263-4532-b262-363262396131/GANG-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6331-6530-4262-a134-373666613139/GFL-light.png",
+dark: "https://static.tildacdn.com/tild6336-3562-4261-a466-373635663335/GFL-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3465-6234-4465-b739-353364383036/Golden-light.png",
+dark: "https://static.tildacdn.com/tild3339-3165-4665-a230-303637313638/Golden-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3538-6464-4237-b738-306565306365/Huaxin-light.png",
+dark: "https://static.tildacdn.com/tild6465-3037-4934-b736-666138613964/Huaxin-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3634-6166-4261-b361-663431646536/Hub-light.png",
+dark: "https://static.tildacdn.com/tild3866-3630-4165-b763-396461316566/Hub-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3634-6663-4734-b532-373562333264/JT-light.png",
+dark: "https://static.tildacdn.com/tild6664-6564-4235-b631-356666313631/JT-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6464-3537-4862-b534-616439653964/JunAn-light.png",
+dark: "https://static.tildacdn.com/tild6330-3438-4365-a566-383836666138/JunAn-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6133-3534-4933-b063-376232656234/MAS-light.png",
+dark: "https://static.tildacdn.com/tild3632-3966-4534-a461-666461613334/MAS-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6464-6538-4466-b166-393265323637/MSC-light.png",
+dark: "https://static.tildacdn.com/tild3630-6537-4434-b031-353565393231/MSC-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3737-6662-4262-a636-326635653130/NAVIS-light.png",
+dark: "https://static.tildacdn.com/tild6338-3934-4331-b833-633561313962/NAVIS-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3964-3236-4437-b730-656563663334/OVP-light.png",
+dark: "https://static.tildacdn.com/tild3265-6165-4162-b931-383562623637/OVP-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6239-3463-4463-a563-623233333336/Panda-light.png",
+dark: "https://static.tildacdn.com/tild3866-6633-4230-a431-363836653338/Panda-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6136-6131-4665-a430-623363323637/RED-light.png",
+dark: "https://static.tildacdn.com/tild3838-3534-4334-b934-353666323131/RED-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3933-6531-4562-b863-303332316238/Ruscon-light.png",
+dark: "https://static.tildacdn.com/tild3330-3462-4065-b363-373164653938/Ruscon-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3734-3938-4261-b961-303231633638/SASCO-light.png",
+dark: "https://static.tildacdn.com/tild3662-3661-4861-a339-643464643564/SASCO-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6565-3030-4366-b135-306432323738/SCO-light.png",
+dark: "https://static.tildacdn.com/tild3534-3565-4464-b461-396231343034/SCO-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3530-3732-4762-a139-613036663962/SINOKOR-light.png",
+dark: "https://static.tildacdn.com/tild6436-6332-4362-a338-353263306332/SINOKOR-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3734-3364-4537-a230-303836396662/SINO-light.png",
+dark: "https://static.tildacdn.com/tild3630-6633-4937-a661-366264336563/SINO-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6663-3932-4630-a531-636435353261/SITC-light.png",
+dark: "https://static.tildacdn.com/tild3730-6232-4231-a562-373837363664/SITC-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3461-3466-4136-a633-666564356331/Torgmoll-light.png",
+dark: "https://static.tildacdn.com/tild3939-3239-4562-a533-633264326537/Torgmoll-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3264-6162-4230-a166-363339633133/Tranzit-light.png",
+dark: "https://static.tildacdn.com/tild6432-6135-4366-b463-666438383538/Tranzit-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3030-6362-4635-b931-373363336536/Zhonggu-light.png",
+dark: "https://static.tildacdn.com/tild3134-3766-4734-a264-383935623061/Zhonggu-dark.jpg",
+},
+];
+var FRAME_ORIG_RU = [
 "https://static.tildacdn.com/tild3865-3064-4136-a366-383461393166/Frame_1204.svg",
 "https://static.tildacdn.com/tild3238-3835-4966-a365-343934633133/Frame_1236.svg",
 "https://static.tildacdn.com/tild3438-3134-4130-a661-373562656230/Frame_1232.svg",
@@ -609,6 +781,8 @@ var FRAME_ORIG = [
 "https://static.tildacdn.com/tild3964-3866-4363-a332-326536336131/Frame_1215.svg",
 "https://static.tildacdn.com/tild6263-6233-4736-a232-313266383531/Frame_1196.svg",
 "https://static.tildacdn.com/tild3835-3339-4938-b333-383031663732/Frame_1202.svg",
+];
+var FRAME_ORIG_EN = [
 "https://static.tildacdn.com/tild6162-3330-4536-a134-396462633232/Frame_221223718.svg",
 "https://static.tildacdn.com/tild6332-6465-4065-b135-303134343536/Frame_221223719.svg",
 "https://static.tildacdn.com/tild3330-3062-4835-b362-303964623234/Frame_221223720.svg",
@@ -627,15 +801,29 @@ var FRAME_ORIG = [
 "https://static.tildacdn.com/tild3038-6536-4238-b931-373337323037/Frame_221223733.svg",
 "https://static.tildacdn.com/tild3731-3263-4333-a364-363134353335/Frame_221223734.svg",
 ];
-var byToken = {};
+var byFullUrl = {};
 var byFrameUrl = {};
-for (var i = 0; i < PAIRS.length; i++) {
-var p = PAIRS[i];
-byToken[fileToken(p.light)] = p;
-byToken[fileToken(p.dark)] = p;
+var byTokenRu = {};
+var byTokenEn = {};
+var byTokenSea = {};
+function registerPairs(list, tokenMap) {
+for (var i = 0; i < list.length; i++) {
+var p = list[i];
+byFullUrl[normUrl(p.light)] = p;
+byFullUrl[normUrl(p.dark)] = p;
+tokenMap[fileToken(p.light)] = p;
+tokenMap[fileToken(p.dark)] = p;
+var base = fileToken(p.light)
+.replace(/2x$/i, "")
+.replace(/-dark$/i, "")
+.replace(/-light$/i, "");
+if (base) tokenMap[base] = p;
 }
-for (var f = 0; f < FRAME_ORIG.length; f++) {
-byFrameUrl[normUrl(FRAME_ORIG[f])] = PAIRS[f % PAIRS.length];
+}
+function registerFrames(frames, list) {
+for (var f = 0; f < frames.length; f++) {
+byFrameUrl[normUrl(frames[f])] = list[f % list.length];
+}
 }
 function fileToken(url) {
 var name = String(url).split("/").pop() || "";
@@ -647,19 +835,54 @@ return String(url || "")
 .replace(/^http:\/\//i, "https://")
 .toLowerCase();
 }
+registerPairs(PAIRS, byTokenRu);
+registerPairs(EN_PAIRS, byTokenEn);
+registerPairs(SEA_PAIRS, byTokenSea);
+registerFrames(FRAME_ORIG_RU, PAIRS);
+registerFrames(FRAME_ORIG_EN, EN_PAIRS);
+function isEnSite() {
+try {
+if (/tisl-ogistic-en/i.test(location.hostname || "")) return true;
+if (/\/en(\/|$)/i.test(location.pathname || "")) return true;
+if ((document.documentElement.lang || "").toLowerCase().indexOf("en") === 0) return true;
+if (document.querySelector('#tis-countries-slider img[src*="Frame_221223"]')) return true;
+if (document.querySelector('#tis-countries-slider img[src*="/Africa.jpg"]')) return true;
+if (document.querySelector('#tis-countries-slider img[src*="Africa-dark.jpg"][src*="tild3965"]'))
+return true;
+} catch (e) {}
+return false;
+}
+function activePairs() {
+return isEnSite() ? EN_PAIRS : PAIRS;
+}
+function activeTokens() {
+return isEnSite() ? byTokenEn : byTokenRu;
+}
 function theme() {
 return document.documentElement.getAttribute("data-tis-theme") || "dark";
 }
+function lookupToken(token, tokens) {
+if (!token || !tokens) return null;
+if (tokens[token]) return tokens[token];
+var base = token.replace(/2x$/i, "").replace(/-dark$/i, "").replace(/-light$/i, "");
+if (base && tokens[base]) return tokens[base];
+if (base && tokens[base + "-light"]) return tokens[base + "-light"];
+if (base && tokens[base + "-dark"]) return tokens[base + "-dark"];
+if (base && tokens[base + "-dark2x"]) return tokens[base + "-dark2x"];
+return null;
+}
 function pairForSrc(src) {
 if (!src) return null;
+var full = normUrl(src);
+if (byFullUrl[full]) return byFullUrl[full];
+if (byFrameUrl[full]) return byFrameUrl[full];
 var token = fileToken(src);
-if (byToken[token]) return byToken[token];
-if (byFrameUrl[normUrl(src)]) return byFrameUrl[normUrl(src)];
-var base = token.replace(/2x$/i, "").replace(/-dark$/i, "").replace(/-light$/i, "");
-if (base && byToken[base + "-light"]) return byToken[base + "-light"];
-if (base && byToken[base + "-dark"]) return byToken[base + "-dark"];
-if (base && byToken[base + "-dark2x"]) return byToken[base + "-dark2x"];
-return null;
+var hit =
+lookupToken(token, activeTokens()) ||
+lookupToken(token, byTokenSea) ||
+lookupToken(token, byTokenRu) ||
+lookupToken(token, byTokenEn);
+return hit || null;
 }
 function wantedUrl(pair, isDark) {
 return isDark ? pair.dark : pair.light;
@@ -686,46 +909,63 @@ if (isDark) img.setAttribute("data-tis-svg-dark", "1");
 else img.removeAttribute("data-tis-svg-dark");
 } catch (e) {}
 }
-function scan() {
-try {
-var countryImgs = document.querySelectorAll(
-".tis-countries__image, #tis-countries-slider img"
-);
+function scanGallery(selector, pairs, excludeClosest) {
+var imgs = document.querySelectorAll(selector);
 var orderIdx = 0;
-countryImgs.forEach(function (img) {
-if (img.closest(".tis-sea-lines, #tis-sea-lines-slider")) return;
+imgs.forEach(function (img) {
+if (excludeClosest && img.closest(excludeClosest)) return;
 var src = img.getAttribute("src") || img.currentSrc || "";
 var pair = pairForSrc(
 img.getAttribute("data-tis-asset-orig") ||
 img.getAttribute("data-tis-svg-orig") ||
 src
 );
-if (!pair && /Frame_/i.test(src)) {
-pair = PAIRS[orderIdx % PAIRS.length];
+if (!pair && (/Frame_/i.test(src) || /\.(jpe?g|png|webp)/i.test(src))) {
+pair = pairs[orderIdx % pairs.length];
 }
 if (pair) applyImg(img, pair);
 orderIdx += 1;
 });
+}
+function scan() {
+try {
+scanGallery(
+".tis-countries__image, #tis-countries-slider img",
+activePairs(),
+".tis-sea-lines, #tis-sea-lines-slider"
+);
+scanGallery(
+".tis-sea-lines__image, #tis-sea-lines-slider img",
+SEA_PAIRS,
+".tis-countries, #tis-countries-slider"
+);
 document.querySelectorAll("img").forEach(function (img) {
 if (img.getAttribute("data-tis-asset-swap") === "1") return;
 if (img.closest(".tis-sea-lines, #tis-sea-lines-slider")) return;
+if (img.closest(".tis-countries, #tis-countries-slider")) return;
 if (img.classList.contains("tis-sea-lines__image")) return;
 if (img.classList.contains("tis-countries__image")) return;
 var src = img.getAttribute("src") || img.currentSrc || "";
-if (/-light\./i.test(src) || /-dark/i.test(src)) applyImg(img);
+if (/-light\./i.test(src) || /-dark/i.test(src) || byFullUrl[normUrl(src)]) {
+applyImg(img);
+}
 });
 } catch (e) {}
 }
-function prefetch() {
-try {
-for (var i = 0; i < PAIRS.length; i++) {
+function prefetchList(list) {
+for (var i = 0; i < list.length; i++) {
 var img = new Image();
 img.decoding = "async";
-img.src = PAIRS[i].dark;
+img.src = list[i].dark;
 var imgL = new Image();
 imgL.decoding = "async";
-imgL.src = PAIRS[i].light;
+imgL.src = list[i].light;
 }
+}
+function prefetch() {
+try {
+prefetchList(activePairs());
+prefetchList(SEA_PAIRS);
 } catch (e) {}
 }
 var timer = null;
