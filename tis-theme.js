@@ -628,15 +628,14 @@ var FRAME_ORIG = [
 "https://static.tildacdn.com/tild3731-3263-4333-a364-363134353335/Frame_221223734.svg",
 ];
 var byToken = {};
-var byFrame = {};
+var byFrameUrl = {};
 for (var i = 0; i < PAIRS.length; i++) {
 var p = PAIRS[i];
 byToken[fileToken(p.light)] = p;
 byToken[fileToken(p.dark)] = p;
 }
 for (var f = 0; f < FRAME_ORIG.length; f++) {
-byFrame[fileToken(FRAME_ORIG[f])] = PAIRS[f % PAIRS.length];
-byFrame[normUrl(FRAME_ORIG[f])] = PAIRS[f % PAIRS.length];
+byFrameUrl[normUrl(FRAME_ORIG[f])] = PAIRS[f % PAIRS.length];
 }
 function fileToken(url) {
 var name = String(url).split("/").pop() || "";
@@ -655,8 +654,7 @@ function pairForSrc(src) {
 if (!src) return null;
 var token = fileToken(src);
 if (byToken[token]) return byToken[token];
-if (byFrame[token]) return byFrame[token];
-if (byFrame[normUrl(src)]) return byFrame[normUrl(src)];
+if (byFrameUrl[normUrl(src)]) return byFrameUrl[normUrl(src)];
 var base = token.replace(/2x$/i, "").replace(/-dark$/i, "").replace(/-light$/i, "");
 if (base && byToken[base + "-light"]) return byToken[base + "-light"];
 if (base && byToken[base + "-dark"]) return byToken[base + "-dark"];
@@ -690,9 +688,12 @@ else img.removeAttribute("data-tis-svg-dark");
 }
 function scan() {
 try {
-var countryImgs = document.querySelectorAll(".tis-countries__image");
+var countryImgs = document.querySelectorAll(
+".tis-countries__image, #tis-countries-slider img"
+);
 var orderIdx = 0;
 countryImgs.forEach(function (img) {
+if (img.closest(".tis-sea-lines, #tis-sea-lines-slider")) return;
 var src = img.getAttribute("src") || img.currentSrc || "";
 var pair = pairForSrc(
 img.getAttribute("data-tis-asset-orig") ||
@@ -703,14 +704,15 @@ if (!pair && /Frame_/i.test(src)) {
 pair = PAIRS[orderIdx % PAIRS.length];
 }
 if (pair) applyImg(img, pair);
-if (/tis-countries__image/.test(String(img.className || ""))) orderIdx += 1;
+orderIdx += 1;
 });
 document.querySelectorAll("img").forEach(function (img) {
 if (img.getAttribute("data-tis-asset-swap") === "1") return;
+if (img.closest(".tis-sea-lines, #tis-sea-lines-slider")) return;
+if (img.classList.contains("tis-sea-lines__image")) return;
+if (img.classList.contains("tis-countries__image")) return;
 var src = img.getAttribute("src") || img.currentSrc || "";
-if (/-light\./i.test(src) || /-dark/i.test(src) || pairForSrc(src)) {
-applyImg(img);
-}
+if (/-light\./i.test(src) || /-dark/i.test(src)) applyImg(img);
 });
 } catch (e) {}
 }
