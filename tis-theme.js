@@ -521,6 +521,247 @@ init();
 try {
 (function () {
 "use strict";
+var PAIRS = [
+{
+light: "https://static.tildacdn.com/tild6364-3337-4364-a635-386631633931/Africa-light.jpg",
+dark: "https://static.tildacdn.com/tild6633-6465-4633-b835-653330386230/Africa-dark2x.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3632-6335-4338-b130-373661633738/Brazil-light.jpg",
+dark: "https://static.tildacdn.com/tild6630-3235-4536-b761-353863333563/Brazil-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3637-6539-4333-b865-323035646436/Cambodia-light.jpg",
+dark: "https://static.tildacdn.com/tild3264-3962-4262-a233-353864636638/Cambodia-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3865-3232-4161-b634-626462303038/Canada-light.jpg",
+dark: "https://static.tildacdn.com/tild3362-3065-4135-b238-333661313465/Canada-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3130-3732-4030-b336-366334643130/Chile-light.jpg",
+dark: "https://static.tildacdn.com/tild6362-6333-4233-b561-393033363439/Chile-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3339-3733-4433-b264-623939396465/China-light.jpg",
+dark: "https://static.tildacdn.com/tild3430-6333-4138-b431-313263633734/China-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3835-3864-4262-b961-653761633666/Europe-light.jpg",
+dark: "https://static.tildacdn.com/tild3662-6161-4034-b663-643239356465/Europe-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3533-6333-4265-b062-643464653136/India-light.jpg",
+dark: "https://static.tildacdn.com/tild3064-3836-4333-a531-353739633061/India-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3632-6563-4134-b135-353834653364/Indonesia-light.jpg",
+dark: "https://static.tildacdn.com/tild3562-6131-4232-b038-373231646666/Indonesia-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6538-6633-4665-b838-666261323763/Japan-light.jpg",
+dark: "https://static.tildacdn.com/tild3631-6261-4431-a133-653561653838/Japan-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6532-3061-4537-b161-303863623261/Korea-light.jpg",
+dark: "https://static.tildacdn.com/tild6437-6532-4732-b466-306231386134/Korea-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6236-6134-4334-a331-343839326238/Malaysia-light.jpg",
+dark: "https://static.tildacdn.com/tild3535-3563-4837-b564-373138313537/Malaysia-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3764-6565-4131-b331-623864393130/Taiwan-light.jpg",
+dark: "https://static.tildacdn.com/tild3765-3332-4666-b833-653539626266/Taiwan-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3639-6466-4761-b839-366462373365/Tyrkey-light.jpg",
+dark: "https://static.tildacdn.com/tild3031-3064-4533-a565-393833373533/Tyrkey-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3036-6563-4266-b766-656236346631/USA-light.jpg",
+dark: "https://static.tildacdn.com/tild6335-3932-4362-b562-346638336266/USA-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild3538-3636-4032-b037-643232633837/UAE-light.jpg",
+dark: "https://static.tildacdn.com/tild6631-6532-4430-a364-373639666466/UAE-dark.jpg",
+},
+{
+light: "https://static.tildacdn.com/tild6661-6261-4138-b837-646464326634/Vietnam-light.jpg",
+dark: "https://static.tildacdn.com/tild3637-6361-4063-b934-383361323137/Vietnam-dark.jpg",
+},
+];
+var FRAME_ORIG = [
+"https://static.tildacdn.com/tild3865-3064-4136-a366-383461393166/Frame_1204.svg",
+"https://static.tildacdn.com/tild3238-3835-4966-a365-343934633133/Frame_1236.svg",
+"https://static.tildacdn.com/tild3438-3134-4130-a661-373562656230/Frame_1232.svg",
+"https://static.tildacdn.com/tild6132-3866-4439-a238-343461346564/Frame_1210.svg",
+"https://static.tildacdn.com/tild3165-3231-4430-a361-323634633966/Frame_1234.svg",
+"https://static.tildacdn.com/tild6234-3831-4666-a135-326661616265/Frame_1233.svg",
+"https://static.tildacdn.com/tild3134-3931-4264-b832-636661623635/Frame_1229.svg",
+"https://static.tildacdn.com/tild6263-3633-4333-b863-376238376339/Frame_1207.svg",
+"https://static.tildacdn.com/tild6132-3630-4938-b138-396239376138/Frame_1213.svg",
+"https://static.tildacdn.com/tild6266-6261-4239-b537-306362353262/Frame_1199.svg",
+"https://static.tildacdn.com/tild6161-6133-4233-a565-386239346236/Frame_1235.svg",
+"https://static.tildacdn.com/tild6137-3630-4831-a166-663836393136/Frame_1212.svg",
+"https://static.tildacdn.com/tild3861-6231-4665-b435-313664613463/Frame_1205.svg",
+"https://static.tildacdn.com/tild3030-3661-4533-b039-323137363661/Frame_1191.svg",
+"https://static.tildacdn.com/tild3964-3866-4363-a332-326536336131/Frame_1215.svg",
+"https://static.tildacdn.com/tild6263-6233-4736-a232-313266383531/Frame_1196.svg",
+"https://static.tildacdn.com/tild3835-3339-4938-b333-383031663732/Frame_1202.svg",
+"https://static.tildacdn.com/tild6162-3330-4536-a134-396462633232/Frame_221223718.svg",
+"https://static.tildacdn.com/tild6332-6465-4065-b135-303134343536/Frame_221223719.svg",
+"https://static.tildacdn.com/tild3330-3062-4835-b362-303964623234/Frame_221223720.svg",
+"https://static.tildacdn.com/tild3433-6564-4461-a266-356230666337/Frame_221223721.svg",
+"https://static.tildacdn.com/tild3066-3034-4463-b837-326232383264/Frame_221223722.svg",
+"https://static.tildacdn.com/tild3336-6234-4630-b062-643261663839/Frame_221223723.svg",
+"https://static.tildacdn.com/tild6565-6661-4037-a665-623632343135/Frame_221223724.svg",
+"https://static.tildacdn.com/tild6633-3661-4132-b732-313866623231/Frame_221223725.svg",
+"https://static.tildacdn.com/tild6333-6238-4239-b461-313834326532/Frame_221223726.svg",
+"https://static.tildacdn.com/tild3031-3462-4032-a563-356465616663/Frame_221223727.svg",
+"https://static.tildacdn.com/tild6639-6566-4666-a232-306437626139/Frame_221223728.svg",
+"https://static.tildacdn.com/tild3661-3732-4232-b238-363239666533/Frame_221223729.svg",
+"https://static.tildacdn.com/tild6430-6362-4366-a332-653537396364/Frame_221223730.svg",
+"https://static.tildacdn.com/tild6134-3839-4739-a334-623765656134/Frame_221223731.svg",
+"https://static.tildacdn.com/tild6638-6331-4566-b636-393637303761/Frame_221223732.svg",
+"https://static.tildacdn.com/tild3038-6536-4238-b931-373337323037/Frame_221223733.svg",
+"https://static.tildacdn.com/tild3731-3263-4333-a364-363134353335/Frame_221223734.svg",
+];
+var byToken = {};
+var byFrame = {};
+for (var i = 0; i < PAIRS.length; i++) {
+var p = PAIRS[i];
+byToken[fileToken(p.light)] = p;
+byToken[fileToken(p.dark)] = p;
+}
+for (var f = 0; f < FRAME_ORIG.length; f++) {
+byFrame[fileToken(FRAME_ORIG[f])] = PAIRS[f % PAIRS.length];
+byFrame[normUrl(FRAME_ORIG[f])] = PAIRS[f % PAIRS.length];
+}
+function fileToken(url) {
+var name = String(url).split("/").pop() || "";
+return name.replace(/\.(jpg|jpeg|png|webp|svg)(\?.*)?$/i, "").toLowerCase();
+}
+function normUrl(url) {
+return String(url || "")
+.split("?")[0]
+.replace(/^http:\/\//i, "https://")
+.toLowerCase();
+}
+function theme() {
+return document.documentElement.getAttribute("data-tis-theme") || "dark";
+}
+function pairForSrc(src) {
+if (!src) return null;
+var token = fileToken(src);
+if (byToken[token]) return byToken[token];
+if (byFrame[token]) return byFrame[token];
+if (byFrame[normUrl(src)]) return byFrame[normUrl(src)];
+var base = token.replace(/2x$/i, "").replace(/-dark$/i, "").replace(/-light$/i, "");
+if (base && byToken[base + "-light"]) return byToken[base + "-light"];
+if (base && byToken[base + "-dark"]) return byToken[base + "-dark"];
+if (base && byToken[base + "-dark2x"]) return byToken[base + "-dark2x"];
+return null;
+}
+function wantedUrl(pair, isDark) {
+return isDark ? pair.dark : pair.light;
+}
+function applyImg(img, pairHint) {
+try {
+var probe =
+img.getAttribute("data-tis-asset-orig") ||
+img.getAttribute("data-tis-svg-orig") ||
+img.getAttribute("src") ||
+img.currentSrc ||
+"";
+var pair = pairHint || pairForSrc(probe);
+if (!pair) return;
+if (!img.getAttribute("data-tis-asset-orig")) {
+img.setAttribute("data-tis-asset-orig", pair.light);
+}
+var isDark = theme() === "dark";
+var next = wantedUrl(pair, isDark);
+var cur = img.getAttribute("src") || "";
+if (cur !== next) img.src = next;
+img.setAttribute("data-tis-asset-swap", "1");
+if (isDark) img.setAttribute("data-tis-svg-dark", "1");
+else img.removeAttribute("data-tis-svg-dark");
+} catch (e) {}
+}
+function scan() {
+try {
+var countryImgs = document.querySelectorAll(".tis-countries__image");
+var orderIdx = 0;
+countryImgs.forEach(function (img) {
+var src = img.getAttribute("src") || img.currentSrc || "";
+var pair = pairForSrc(
+img.getAttribute("data-tis-asset-orig") ||
+img.getAttribute("data-tis-svg-orig") ||
+src
+);
+if (!pair && /Frame_/i.test(src)) {
+pair = PAIRS[orderIdx % PAIRS.length];
+}
+if (pair) applyImg(img, pair);
+if (/tis-countries__image/.test(String(img.className || ""))) orderIdx += 1;
+});
+document.querySelectorAll("img").forEach(function (img) {
+if (img.getAttribute("data-tis-asset-swap") === "1") return;
+var src = img.getAttribute("src") || img.currentSrc || "";
+if (/-light\./i.test(src) || /-dark/i.test(src) || pairForSrc(src)) {
+applyImg(img);
+}
+});
+} catch (e) {}
+}
+function prefetch() {
+try {
+for (var i = 0; i < PAIRS.length; i++) {
+var img = new Image();
+img.decoding = "async";
+img.src = PAIRS[i].dark;
+var imgL = new Image();
+imgL.decoding = "async";
+imgL.src = PAIRS[i].light;
+}
+} catch (e) {}
+}
+var timer = null;
+function schedule() {
+if (timer) return;
+timer = setTimeout(function () {
+timer = null;
+scan();
+}, 40);
+}
+function on(el, ev, fn) {
+try {
+if (el && typeof el.addEventListener === "function") el.addEventListener(ev, fn);
+} catch (e) {}
+}
+function boot() {
+prefetch();
+scan();
+try {
+new MutationObserver(schedule).observe(document.documentElement, {
+childList: true,
+subtree: true,
+attributes: true,
+attributeFilter: ["src", "data-tis-theme", "class"],
+});
+} catch (e) {}
+on(document, "tis:themechange", scan);
+setTimeout(scan, 200);
+setTimeout(scan, 800);
+setTimeout(scan, 2000);
+}
+if (document.readyState === "loading") on(document, "DOMContentLoaded", boot);
+else boot();
+})();
+} catch (tisErr) { try { console.warn("[tis] theme-asset-swap.js", tisErr); } catch (e) {} }
+try {
+(function () {
+"use strict";
 var RULES = [
 {
 match: /c0a89d0b\.svg|Group_221222299\.svg|tild3962-6331-4133-b563-363431363235\/SVG\.svg|tild6135-6234-4566-a439-396430346461\/c0a89d0b\.svg|tild3136-3664-4636-b737-646265346365\/1\.svg/i,
@@ -555,7 +796,7 @@ kind: "table",
 {
 match: /Frame_\d+\.svg|\/photo\.svg(\?|$)/i,
 kind: "frame-card",
-classNeed: /tis-sea-lines__image|tis-countries__image/,
+classNeed: /tis-sea-lines__image/,
 },
 {
 match: /Section\.svg/i,
@@ -806,6 +1047,8 @@ return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
 function applyToImg(img) {
 try {
 if (img.getAttribute("data-tis-svg-hover") === "1") return;
+if (img.getAttribute("data-tis-asset-swap") === "1") return;
+if (/tis-countries__image/.test(String(img.className || ""))) return;
 var probe = img.getAttribute("data-tis-svg-orig") || img.currentSrc || img.src || "";
 var rule = ruleFor(probe, img);
 if (!rule) {
