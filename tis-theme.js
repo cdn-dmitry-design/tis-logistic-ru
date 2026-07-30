@@ -39,7 +39,7 @@ var MOON =
 var SUN =
 "https://static.tildacdn.com/tild6261-3162-4966-a137-323630623361/2d81e7e0.svg";
 var SKIP =
-".theme,.theme-knob,.theme-sun,.theme-moon,.tis-switch-theme,.theme-keep,[data-theme-ignore],.tis-yellow-btn,.tis-muted-btn,[data-tis-scanned]";
+".theme,.theme-knob,.theme-sun,.theme-moon,.tis-switch-theme,.theme-keep,[data-theme-ignore],.tis-yellow-btn,.tis-muted-btn,[data-tis-scanned],#rec2483529621,#rec2483526831,#rec2465288061,#rec2483544181";
 var SCAN_SEL =
 '#allrecords .tn-atom, #allrecords .tis-shape-bg, #allrecords .tn-molecule, #allrecords .t-title, #allrecords .t-name, #allrecords .t-text, #allrecords .t-descr, #allrecords .t-btn, #allrecords [data-elem-type="button"] .tn-atom, #allrecords [data-elem-type="shape"] > .tn-atom';
 var BACKGROUNDS = {
