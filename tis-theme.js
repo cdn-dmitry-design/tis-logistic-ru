@@ -257,16 +257,11 @@ function syncRailRouteYellowBtns() {
 var rec = document.querySelector(sel);
 if (!rec) return;
 rec.querySelectorAll('[class*="tis-route-btn-"]').forEach(function (btn) {
-var active = btn.classList.contains("is-route-active");
 var atom = btn.querySelector(".tn-atom");
 [btn, atom].forEach(function (node) {
 if (!node) return;
-if (active) {
-node.classList.add("tis-yellow-btn");
-node.setAttribute("data-theme-ignore", "");
-} else {
 node.classList.remove("tis-yellow-btn");
-}
+node.setAttribute("data-theme-ignore", "");
 });
 });
 });
@@ -1661,9 +1656,24 @@ ensureShapeBg(card);
 linkOverlappingParts(card);
 card.setAttribute("data-tis-shape-ready", "1");
 }
+var NEWS_SHAPE_RECS = [
+"#rec2467379731",
+"#rec2467923431",
+"#rec2467954441",
+];
+function markNewsShapes() {
+NEWS_SHAPE_RECS.forEach(function (sel) {
+var rec = document.querySelector(sel);
+if (!rec) return;
+rec.querySelectorAll(".tis-shape").forEach(function (card) {
+card.classList.add("tis-news-shape");
+});
+});
+}
 function bootShapes() {
 ensureServicesIndexShapes();
 document.querySelectorAll(".tis-shape:not([data-tis-shape-ready]), .tis-arrow:not([data-tis-shape-ready])").forEach(wireShapeCard);
+markNewsShapes();
 linkMutedServiceCards();
 }
 function scheduleShapeBoot() {
@@ -1679,6 +1689,118 @@ document.addEventListener("DOMContentLoaded", scheduleShapeBoot, { once: true })
 scheduleShapeBoot();
 }
 } catch (tisErr) { try { console.warn("[tis] shapes.js", tisErr); } catch (e) {} }
+try {
+(function () {
+"use strict";
+var ROOTS = ["#rec2480170411", "#rec2502597221"];
+var SEL = '[class*="tis-route-btn-"]';
+var bound = false;
+function eachBtn(fn) {
+ROOTS.forEach(function (rootSel) {
+var rec = document.querySelector(rootSel);
+if (!rec) return;
+rec.querySelectorAll(SEL).forEach(fn);
+});
+}
+function clearYellowBtn(node) {
+if (!node) return;
+node.classList.remove("tis-yellow-btn");
+}
+function syncActive() {
+eachBtn(function (btn) {
+var active = btn.classList.contains("is-route-active");
+var atom = btn.querySelector(".tn-atom");
+clearYellowBtn(btn);
+clearYellowBtn(atom);
+if (atom) {
+if (active) {
+atom.style.setProperty("background-color", "#f1b83b", "important");
+atom.style.setProperty("border-color", "#f1b83b", "important");
+atom.style.setProperty("color", "#ffffff", "important");
+atom.style.setProperty("-webkit-text-fill-color", "#ffffff", "important");
+} else if (!btn.classList.contains("is-route-hover")) {
+atom.style.removeProperty("background-color");
+atom.style.removeProperty("border-color");
+atom.style.setProperty("color", "#ffffff", "important");
+atom.style.setProperty("-webkit-text-fill-color", "#ffffff", "important");
+}
+}
+btn.style.setProperty("color", "#ffffff", "important");
+});
+}
+function setHover(btn, on) {
+btn.classList.toggle("is-route-hover", on);
+var atom = btn.querySelector(".tn-atom");
+if (!atom) return;
+if (on || btn.classList.contains("is-route-active")) {
+atom.style.setProperty("background-color", "#f1b83b", "important");
+atom.style.setProperty("border-color", "#f1b83b", "important");
+atom.style.setProperty("color", "#ffffff", "important");
+atom.style.setProperty("-webkit-text-fill-color", "#ffffff", "important");
+} else {
+atom.style.removeProperty("background-color");
+atom.style.removeProperty("border-color");
+atom.style.setProperty("color", "#ffffff", "important");
+atom.style.setProperty("-webkit-text-fill-color", "#ffffff", "important");
+}
+}
+function bind() {
+if (bound) {
+syncActive();
+return;
+}
+var found = false;
+eachBtn(function (btn) {
+found = true;
+if (btn.getAttribute("data-tis-route-bound") === "1") return;
+btn.setAttribute("data-tis-route-bound", "1");
+btn.addEventListener("mouseenter", function () {
+setHover(btn, true);
+});
+btn.addEventListener("mouseleave", function () {
+setHover(btn, false);
+syncActive();
+});
+btn.addEventListener("focusin", function () {
+setHover(btn, true);
+});
+btn.addEventListener("focusout", function () {
+setHover(btn, false);
+syncActive();
+});
+});
+if (!found) return;
+bound = true;
+syncActive();
+document.addEventListener(
+"click",
+function (event) {
+var btn =
+event.target && event.target.closest
+? event.target.closest(
+"#rec2480170411 [class*='tis-route-btn-'], #rec2502597221 [class*='tis-route-btn-']"
+)
+: null;
+if (!btn) return;
+setTimeout(syncActive, 0);
+setTimeout(syncActive, 50);
+},
+true
+);
+}
+function boot() {
+bind();
+if (!bound) setTimeout(bind, 200);
+if (!bound) setTimeout(bind, 800);
+}
+if (document.readyState === "loading") {
+document.addEventListener("DOMContentLoaded", boot, { once: true });
+} else {
+boot();
+}
+if (typeof window.t_onReady === "function") window.t_onReady(boot);
+})();
+} catch (tisErr) { try { console.warn("[tis] rail-route-btns.js", tisErr); } catch (e) {} }
 try {
 document.addEventListener("DOMContentLoaded",function(){const e=document.querySelector("#rec2483004181");if(!e)return;function t(){e.classList.toggle("tis-scroll-black",window.scrollY>=50)}t(),window.addEventListener("scroll",t,{passive:true})});
 } catch (tisErr) { try { console.warn("[tis] header-scroll.js", tisErr); } catch (e) {} }
