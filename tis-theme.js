@@ -163,42 +163,28 @@ function toggle() {
 applyTheme(currentTheme() === DARK ? LIGHT : DARK, true);
 }
 function runChunked(queue, processItem, done) {
-function run(deadline) {
+function run() {
 var start =
 typeof performance !== "undefined" && performance.now
 ? performance.now()
 : Date.now();
-while (queue.length) {
-var budget =
-deadline && typeof deadline.timeRemaining === "function"
-? deadline.timeRemaining()
-: 16;
+var n = 0;
+while (queue.length && n < 40) {
 var elapsed =
 (typeof performance !== "undefined" && performance.now
 ? performance.now()
 : Date.now()) - start;
-if (budget <= 4 || elapsed > 45) break;
+if (elapsed > 40 && n > 0) break;
 processItem(queue.shift());
+n++;
 }
 if (queue.length) {
-if (typeof requestIdleCallback === "function") {
-requestIdleCallback(run, { timeout: 1500 });
-} else {
-setTimeout(function () {
-run({ timeRemaining: function () { return 16; } });
-}, 0);
-}
+setTimeout(run, 0);
 } else if (typeof done === "function") {
 done();
 }
 }
-if (typeof requestIdleCallback === "function") {
-requestIdleCallback(run, { timeout: 1500 });
-} else {
-setTimeout(function () {
-run({ timeRemaining: function () { return 16; } });
-}, 0);
-}
+setTimeout(run, 0);
 }
 function scanOnce() {
 if (didScan || currentTheme() !== DARK) return;
@@ -356,11 +342,7 @@ releaseNativeButton();
 syncRailRouteYellowBtns();
 markMutedDetailsButtons();
 if (currentTheme() === DARK) {
-if (typeof requestIdleCallback === "function") {
-requestIdleCallback(scanOnce, { timeout: 2000 });
-} else {
-setTimeout(scanOnce, 120);
-}
+setTimeout(scanOnce, 0);
 }
 document.addEventListener(
 "click",
