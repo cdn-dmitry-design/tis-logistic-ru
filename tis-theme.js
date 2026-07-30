@@ -162,25 +162,62 @@ new CustomEvent("tis:themechange", { detail: { theme: next } })
 function toggle() {
 applyTheme(currentTheme() === DARK ? LIGHT : DARK, true);
 }
+function runChunked(queue, processItem, done) {
+function run(deadline) {
+var start =
+typeof performance !== "undefined" && performance.now
+? performance.now()
+: Date.now();
+while (queue.length) {
+var budget =
+deadline && typeof deadline.timeRemaining === "function"
+? deadline.timeRemaining()
+: 16;
+var elapsed =
+(typeof performance !== "undefined" && performance.now
+? performance.now()
+: Date.now()) - start;
+if (budget <= 4 || elapsed > 45) break;
+processItem(queue.shift());
+}
+if (queue.length) {
+if (typeof requestIdleCallback === "function") {
+requestIdleCallback(run, { timeout: 1500 });
+} else {
+setTimeout(function () {
+run({ timeRemaining: function () { return 16; } });
+}, 0);
+}
+} else if (typeof done === "function") {
+done();
+}
+}
+if (typeof requestIdleCallback === "function") {
+requestIdleCallback(run, { timeout: 1500 });
+} else {
+setTimeout(function () {
+run({ timeRemaining: function () { return 16; } });
+}, 0);
+}
+}
 function scanOnce() {
 if (didScan || currentTheme() !== DARK) return;
 didScan = true;
-var nodes = document.querySelectorAll(SCAN_SEL);
+var nodes = Array.prototype.slice.call(document.querySelectorAll(SCAN_SEL));
 var plan = [];
-for (var i = 0; i < nodes.length; i++) {
-var el = nodes[i];
-if (!(el instanceof Element)) continue;
-if (el.hasAttribute("data-tis-scanned")) continue;
+function measureOne(el) {
+if (!(el instanceof Element)) return;
+if (el.hasAttribute("data-tis-scanned")) return;
 try {
-if (el.closest(SKIP)) continue;
+if (el.closest(SKIP)) return;
 } catch (e) {
-continue;
+return;
 }
 var style = getComputedStyle(el);
 var bg = style.backgroundColor;
 if (bg === YELLOW_RGB) {
 plan.push({ el: el, yellow: true });
-continue;
+return;
 }
 var ops = [];
 var token = BACKGROUNDS[bg];
@@ -193,20 +230,20 @@ if (token) ops.push(["--tis-dark-border", token, "tis-dark-border"]);
 }
 if (ops.length) plan.push({ el: el, ops: ops });
 }
-requestAnimationFrame(function () {
-for (var j = 0; j < plan.length; j++) {
-var item = plan[j];
+function applyOne(item) {
 item.el.setAttribute("data-tis-scanned", "1");
 if (item.yellow) {
 item.el.classList.add("tis-yellow-btn");
 item.el.setAttribute("data-theme-ignore", "");
-continue;
+return;
 }
 for (var k = 0; k < item.ops.length; k++) {
 item.el.style.setProperty(item.ops[k][0], "var(" + item.ops[k][1] + ")");
 item.el.classList.add(item.ops[k][2]);
 }
 }
+runChunked(nodes, measureOne, function () {
+runChunked(plan.slice(), applyOne);
 });
 }
 function releaseNativeButton() {
@@ -320,9 +357,9 @@ syncRailRouteYellowBtns();
 markMutedDetailsButtons();
 if (currentTheme() === DARK) {
 if (typeof requestIdleCallback === "function") {
-requestIdleCallback(scanOnce, { timeout: 600 });
+requestIdleCallback(scanOnce, { timeout: 2000 });
 } else {
-setTimeout(scanOnce, 50);
+setTimeout(scanOnce, 120);
 }
 }
 document.addEventListener(
@@ -1411,35 +1448,18 @@ else applyToBg(el);
 });
 } catch (e) {}
 }
-var timer = null;
-function schedule() {
-if (timer) return;
-timer = setTimeout(function () {
-timer = null;
-scan();
-}, 120);
-}
-function on(el, ev, fn) {
+function on(el, ev, fn, opts) {
 try {
-if (el && typeof el.addEventListener === "function") el.addEventListener(ev, fn);
+if (el && typeof el.addEventListener === "function") el.addEventListener(ev, fn, opts);
 } catch (e) {}
 }
 function boot() {
-scan();
+if (typeof requestIdleCallback === "function") {
+requestIdleCallback(scan, { timeout: 2500 });
+} else {
+setTimeout(scan, 200);
+}
 on(document, "tis:themechange", scan);
-try {
-var root = document.getElementById("allrecords");
-if (root && typeof MutationObserver !== "undefined") {
-new MutationObserver(function (mutations) {
-for (var i = 0; i < mutations.length; i++) {
-if (mutations[i].addedNodes && mutations[i].addedNodes.length) {
-schedule();
-return;
-}
-}
-}).observe(root, { childList: true, subtree: true });
-}
-} catch (e) {}
 }
 if (document.readyState === "loading") {
 on(document, "DOMContentLoaded", boot, { once: true });
