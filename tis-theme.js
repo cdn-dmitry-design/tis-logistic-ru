@@ -22,28 +22,6 @@ document.body.classList.toggle("white-theme", theme === "light");
 );
 }
 })();
-(function () {
-var DEFER = ["rec2483526831", "rec2465288061"];
-function strip(rec) {
-if (!rec) return;
-var atoms = rec.querySelectorAll('.tn-atom[style*="background-image"]');
-for (var i = 0; i < atoms.length; i++) {
-var el = atoms[i];
-var st = el.getAttribute("style") || "";
-var m = st.match(/background-image\s*:\s*url\(['"]?([^'")]+)['"]?\)/i);
-if (m) el.setAttribute("data-tis-bg", m[1]);
-el.style.setProperty("background-image", "none", "important");
-}
-}
-function run() {
-for (var i = 0; i < DEFER.length; i++) strip(document.getElementById(DEFER[i]));
-}
-if (document.readyState === "loading") {
-document.addEventListener("DOMContentLoaded", run, { once: true });
-} else {
-run();
-}
-})();
 } catch (tisErr) { try { console.warn("[tis] theme-init.js", tisErr); } catch (e) {} }
 try {
 (function () {
@@ -63,7 +41,7 @@ var SUN =
 var SKIP =
 ".theme,.theme-knob,.theme-sun,.theme-moon,.tis-switch-theme,.theme-keep,[data-theme-ignore],.tis-yellow-btn,.tis-muted-btn,[data-tis-scanned]";
 var SCAN_SEL =
-'#allrecords .tn-atom, #allrecords .t-title, #allrecords .t-name, #allrecords .t-text, #allrecords .t-descr, #allrecords .t-btn, #allrecords [data-elem-type="button"] .tn-atom';
+'#allrecords .tn-atom, #allrecords .tis-shape-bg, #allrecords .tn-molecule, #allrecords .t-title, #allrecords .t-name, #allrecords .t-text, #allrecords .t-descr, #allrecords .t-btn, #allrecords [data-elem-type="button"] .tn-atom, #allrecords [data-elem-type="shape"] > .tn-atom';
 var BACKGROUNDS = {
 "rgb(247, 247, 247)": "--tis-page",
 "rgb(255, 255, 255)": "--tis-surface",
@@ -103,6 +81,37 @@ var BORDERS = {
 };
 var YELLOW_RGB = "rgb(241, 184, 59)";
 var didScan = false;
+function normColor(value) {
+if (!value) return "";
+var v = String(value).trim().toLowerCase();
+if (v === "transparent" || v === "rgba(0, 0, 0, 0)") return "";
+if (v.indexOf("rgb") === 0) {
+var m = v.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+if (!m) return "";
+return "rgb(" + m[1] + ", " + m[2] + ", " + m[3] + ")";
+}
+if (v.charAt(0) === "#" && (v.length === 4 || v.length === 7)) {
+var hex = v.slice(1);
+if (hex.length === 3) {
+hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+}
+return (
+"rgb(" +
+parseInt(hex.slice(0, 2), 16) +
+", " +
+parseInt(hex.slice(2, 4), 16) +
+", " +
+parseInt(hex.slice(4, 6), 16) +
+")"
+);
+}
+return "";
+}
+function inlineBg(el) {
+var st = el.getAttribute("style") || "";
+var m = st.match(/background(?:-color)?\s*:\s*([^;]+)/i);
+return m ? normColor(m[1]) : "";
+}
 function savedTheme() {
 try {
 return localStorage.getItem(STORE);
@@ -200,7 +209,7 @@ if (el.closest(SKIP)) return;
 return;
 }
 var style = getComputedStyle(el);
-var bg = style.backgroundColor;
+var bg = inlineBg(el) || normColor(style.backgroundColor);
 if (bg === YELLOW_RGB) {
 plan.push({ el: el, yellow: true });
 return;
@@ -208,10 +217,10 @@ return;
 var ops = [];
 var token = BACKGROUNDS[bg];
 if (token) ops.push(["--tis-dark-bg", token, "tis-dark-bg"]);
-token = TEXT[style.color];
+token = TEXT[normColor(style.color)];
 if (token) ops.push(["--tis-dark-color", token, "tis-dark-color"]);
 if (style.borderTopStyle !== "none" && style.borderTopWidth !== "0px") {
-token = BORDERS[style.borderTopColor];
+token = BORDERS[normColor(style.borderTopColor)];
 if (token) ops.push(["--tis-dark-border", token, "tis-dark-border"]);
 }
 if (ops.length) plan.push({ el: el, ops: ops });
