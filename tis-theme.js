@@ -37,17 +37,6 @@ el.style.setProperty("background-image", "none", "important");
 }
 function run() {
 for (var i = 0; i < DEFER.length; i++) strip(document.getElementById(DEFER[i]));
-var first = document.getElementById("rec2483529621");
-if (first) {
-var atoms = first.querySelectorAll('.tn-atom[style*="background-image"]');
-for (var j = 0; j < atoms.length; j++) {
-var el = atoms[j];
-var st = el.getAttribute("style") || "";
-var m = st.match(/background-image\s*:\s*url\(['"]?([^'")]+)['"]?\)/i);
-if (m) el.setAttribute("data-tis-bg", m[1]);
-el.style.setProperty("background-image", "none", "important");
-}
-}
 }
 if (document.readyState === "loading") {
 document.addEventListener("DOMContentLoaded", run, { once: true });
@@ -71,6 +60,49 @@ var MOON =
 "https://static.tildacdn.com/tild3165-3530-4733-b163-643066376561/8fe3c51c.svg";
 var SUN =
 "https://static.tildacdn.com/tild6261-3162-4966-a137-323630623361/2d81e7e0.svg";
+var SKIP =
+".theme,.theme-knob,.theme-sun,.theme-moon,.tis-switch-theme,.theme-keep,[data-theme-ignore],.tis-yellow-btn,.tis-muted-btn,[data-tis-scanned]";
+var SCAN_SEL =
+'#allrecords .tn-atom, #allrecords .t-title, #allrecords .t-name, #allrecords .t-text, #allrecords .t-descr, #allrecords .t-btn, #allrecords [data-elem-type="button"] .tn-atom';
+var BACKGROUNDS = {
+"rgb(247, 247, 247)": "--tis-page",
+"rgb(255, 255, 255)": "--tis-surface",
+"rgb(238, 238, 238)": "--tis-soft",
+"rgb(217, 217, 217)": "--tis-map",
+"rgb(51, 51, 51)": "--tis-soft",
+"rgb(51, 51, 56)": "--tis-soft",
+"rgb(27, 27, 31)": "--tis-page",
+"rgb(42, 42, 47)": "--tis-surface",
+"rgb(66, 66, 74)": "--tis-map",
+};
+var TEXT = {
+"rgb(0, 0, 0)": "--tis-text",
+"rgb(17, 17, 17)": "--tis-text",
+"rgb(30, 30, 30)": "--tis-text",
+"rgb(34, 34, 34)": "--tis-text",
+"rgb(76, 76, 76)": "--tis-muted",
+"rgb(84, 84, 84)": "--tis-muted",
+"rgb(85, 85, 85)": "--tis-muted",
+"rgb(92, 92, 92)": "--tis-muted",
+"rgb(173, 173, 185)": "--tis-muted",
+};
+var BORDERS = {
+"rgb(215, 215, 215)": "--tis-border",
+"rgb(217, 217, 217)": "--tis-border",
+"rgb(222, 222, 222)": "--tis-border",
+"rgb(223, 223, 223)": "--tis-border",
+"rgb(224, 224, 224)": "--tis-border",
+"rgb(118, 118, 118)": "--tis-border",
+"rgb(119, 119, 119)": "--tis-border",
+"rgb(0, 0, 0)": "--tis-border-strong",
+"rgb(17, 17, 17)": "--tis-border-strong",
+"rgb(30, 30, 30)": "--tis-border-strong",
+"rgb(34, 34, 34)": "--tis-border-strong",
+"rgb(241, 184, 59)": "--tis-accent-alt",
+"rgb(177, 41, 37)": "--tis-red",
+};
+var YELLOW_RGB = "rgb(241, 184, 59)";
+var didScan = false;
 function savedTheme() {
 try {
 return localStorage.getItem(STORE);
@@ -130,6 +162,53 @@ new CustomEvent("tis:themechange", { detail: { theme: next } })
 function toggle() {
 applyTheme(currentTheme() === DARK ? LIGHT : DARK, true);
 }
+function scanOnce() {
+if (didScan || currentTheme() !== DARK) return;
+didScan = true;
+var nodes = document.querySelectorAll(SCAN_SEL);
+var plan = [];
+for (var i = 0; i < nodes.length; i++) {
+var el = nodes[i];
+if (!(el instanceof Element)) continue;
+if (el.hasAttribute("data-tis-scanned")) continue;
+try {
+if (el.closest(SKIP)) continue;
+} catch (e) {
+continue;
+}
+var style = getComputedStyle(el);
+var bg = style.backgroundColor;
+if (bg === YELLOW_RGB) {
+plan.push({ el: el, yellow: true });
+continue;
+}
+var ops = [];
+var token = BACKGROUNDS[bg];
+if (token) ops.push(["--tis-dark-bg", token, "tis-dark-bg"]);
+token = TEXT[style.color];
+if (token) ops.push(["--tis-dark-color", token, "tis-dark-color"]);
+if (style.borderTopStyle !== "none" && style.borderTopWidth !== "0px") {
+token = BORDERS[style.borderTopColor];
+if (token) ops.push(["--tis-dark-border", token, "tis-dark-border"]);
+}
+if (ops.length) plan.push({ el: el, ops: ops });
+}
+requestAnimationFrame(function () {
+for (var j = 0; j < plan.length; j++) {
+var item = plan[j];
+item.el.setAttribute("data-tis-scanned", "1");
+if (item.yellow) {
+item.el.classList.add("tis-yellow-btn");
+item.el.setAttribute("data-theme-ignore", "");
+continue;
+}
+for (var k = 0; k < item.ops.length; k++) {
+item.el.style.setProperty(item.ops[k][0], "var(" + item.ops[k][1] + ")");
+item.el.classList.add(item.ops[k][2]);
+}
+}
+});
+}
 function releaseNativeButton() {
 var root = document.querySelector(
 '#rec2467434721 [data-elem-id="1783961348875000001"]'
@@ -187,11 +266,11 @@ function pointInRect(x, y, rect) {
 return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
 }
 function unionRect(elements) {
-var left = Infinity;
-var top = Infinity;
-var right = -Infinity;
-var bottom = -Infinity;
-var found = false;
+var left = Infinity,
+top = Infinity,
+right = -Infinity,
+bottom = -Infinity,
+found = false;
 elements.forEach(function (el) {
 if (!el || !el.getBoundingClientRect) return;
 var r = el.getBoundingClientRect();
@@ -218,10 +297,10 @@ var scope =
 part.closest("#t-header, #rec2483004181, .t396__artboard, header") || document;
 return scope.querySelector(TRACK) || document.querySelector(TRACK);
 }
-var x = event.clientX;
-var y = event.clientY;
-var list = tracks();
-for (var i = 0; i < list.length; i += 1) {
+var x = event.clientX,
+y = event.clientY,
+list = tracks();
+for (var i = 0; i < list.length; i++) {
 var t = list[i];
 var scope2 =
 t.closest("#t-header, #rec2483004181, .t396__artboard, header") || document;
@@ -239,6 +318,13 @@ applyTheme(currentTheme(), false);
 releaseNativeButton();
 syncRailRouteYellowBtns();
 markMutedDetailsButtons();
+if (currentTheme() === DARK) {
+if (typeof requestIdleCallback === "function") {
+requestIdleCallback(scanOnce, { timeout: 600 });
+} else {
+setTimeout(scanOnce, 50);
+}
+}
 document.addEventListener(
 "click",
 function (event) {
@@ -250,13 +336,16 @@ event.target && event.target.closest
 : null;
 if (routeBtn) {
 setTimeout(syncRailRouteYellowBtns, 0);
-setTimeout(syncRailRouteYellowBtns, 50);
 }
 var control = findControlFromEvent(event);
 if (!control) return;
 event.preventDefault();
 event.stopPropagation();
 toggle();
+if (currentTheme() === DARK) {
+didScan = false;
+scanOnce();
+}
 },
 true
 );
@@ -274,9 +363,8 @@ apply: applyTheme,
 toggle: toggle,
 current: currentTheme,
 scan: function () {
-releaseNativeButton();
-syncRailRouteYellowBtns();
-markMutedDetailsButtons();
+didScan = false;
+scanOnce();
 },
 };
 }
