@@ -8,6 +8,7 @@ var saved = localStorage.getItem(STORE);
 if (saved === "light" || saved === "dark") theme = saved;
 } catch (e) {}
 document.documentElement.setAttribute(ATTR, theme);
+document.documentElement.classList.remove("tis-page-enter", "tis-page-exit");
 if (document.body) {
 document.body.classList.toggle("dark-theme", theme === "dark");
 document.body.classList.toggle("white-theme", theme === "light");
@@ -17,6 +18,7 @@ document.addEventListener(
 function () {
 document.body.classList.toggle("dark-theme", theme === "dark");
 document.body.classList.toggle("white-theme", theme === "light");
+document.documentElement.classList.remove("tis-page-enter", "tis-page-exit");
 },
 { once: true }
 );
